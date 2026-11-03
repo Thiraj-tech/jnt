@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import InkSplash from '../../components/InkSplash.astro';
 import Base from '../../layouts/Base.astro';
 import QuoteCTA from '../../components/QuoteCTA.astro';
 import { url } from '../../data/site';
@@ -14,7 +13,6 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
 >
   <header class="page-head">
     <div class="halftone" aria-hidden="true"></div>
-    <InkSplash ink="cyan" variant={2} />
     <div class="wrap">
       <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">Products</li></ol>
       <h1>Product portfolio</h1>

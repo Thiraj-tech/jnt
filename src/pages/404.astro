@@ -1,13 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import InkSplash from '../components/InkSplash.astro';
 import { url } from '../data/site';
 ---
 <Base title="Page not found" noindex>
   <section class="section">
     <div class="wrap">
-      <p class="big-num ink-404" aria-hidden="true"><InkSplash ink="cyan" variant={1} />404</p>
+      <p class="big-num" aria-hidden="true">404</p>
       <h1>Page not found.</h1>
       <p class="lede">The page you requested has moved or is no longer available.</p>
       <div class="btn-row">

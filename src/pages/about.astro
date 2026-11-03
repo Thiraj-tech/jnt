@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets';
-import InkSplash from '../components/InkSplash.astro';
 import Base from '../layouts/Base.astro';
 import QuoteCTA from '../components/QuoteCTA.astro';
 import { site, url } from '../data/site';
@@ -16,7 +15,6 @@ const years = site.claims.years;
 >
   <header class="page-head">
     <div class="halftone" aria-hidden="true"></div>
-    <InkSplash ink="red" variant={1} />
     <div class="wrap">
       <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">About</li></ol>
       <h1>A trusted supplier to Sri Lanka's printing industry.</h1>

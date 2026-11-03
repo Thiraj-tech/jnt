@@ -4,7 +4,6 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import RegMark from '../components/RegMark.astro';
-import InkSplash from '../components/InkSplash.astro';
 import QuoteCTA from '../components/QuoteCTA.astro';
 import { site, url } from '../data/site';
 import fountainImg from '../assets/products/fountain-solution.png';
@@ -37,8 +36,7 @@ const codeRange = (p: (typeof products)[number]) => {
       <div class="hero__art" aria-hidden="true">
         <div class="halftone"></div>
         <div class="hero__block hero__block--y"></div>
-                <InkSplash ink="cyan" variant={1} class="hero__ink" />
-        <InkSplash ink="red" variant={3} class="hero__ink hero__ink--drop" />
+        <div class="hero__block hero__block--r"></div>
         <Image class="hero__can hero__can--a" src={gumImg} alt="" widths={[260, 520]} sizes="(max-width: 860px) 50vw, 290px" format="webp" loading="eager" />
         <Image class="hero__can hero__can--b" src={fountainImg} alt="" widths={[260, 520]} sizes="(max-width: 860px) 50vw, 280px" format="webp" loading="eager" fetchpriority="high" />
         <RegMark class="hero__reg hero__reg--tl" />

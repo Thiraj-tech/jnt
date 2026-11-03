@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { site, url, turnstileSiteKey } from '../../data/site';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base
+  title="Contact"
+  description="Contact JNT Suppliers for quotations, product information and technical guidance on offset printing chemicals."
+>
+  <header class="page-head">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="wrap">
+      <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">Contact</li></ol>
+      <h1>Contact our sales team.</h1>
+      <p class="lede">For quotations, product information or technical guidance, submit the enquiry form below or contact us directly. We respond by phone or email.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div>
+        <p class="label eyebrow">Enquiry form</p>
+        <h2>Request a quotation</h2>
+        <noscript>
+          <p class="notice">The quote form needs JavaScript for its spam check. Please WhatsApp, call or email us using the details on this page.</p>
+        </noscript>
+        <form class="form" id="quote-form" method="post" action={url("/quote.php")} novalidate hidden>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-name">Full name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="100" />
+            </div>
+            <div class="field">
+              <label for="f-company">Company <span>(optional)</span></label>
+              <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="120" />
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-phone">Phone or WhatsApp</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30" />
+            </div>
+            <div class="field">
+              <label for="f-email">Email <span>(optional)</span></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" maxlength="160" />
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-product">Product</label>
+              <select id="f-product" name="product">
+                <option value="">General enquiry / multiple products</option>
+                {products.map((p) => <option value={p.id}>{p.data.shortTitle}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-qty">Estimated quantity <span>(optional)</span></label>
+              <input id="f-qty" name="quantity" type="text" placeholder="e.g. 4 × 5 L" maxlength="80" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-message">Requirements</label>
+            <textarea id="f-message" name="message" required maxlength="3000" placeholder="Please include your press type, plate type, water conditions and delivery location so we can recommend the right product."></textarea>
+          </div>
+
+          <!-- Spam traps: a hidden field people never fill, and the time the form was opened. -->
+          <div class="hp" aria-hidden="true">
+            <label for="f-fax">Leave this empty</label>
+            <input id="f-fax" name="fax_number" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <input type="hidden" name="t" value="" />
+
+          <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible"></div>
+
+          <div class="btn-row">
+            <button class="btn btn--red" type="submit">Submit enquiry <Icon name="arrow" /></button>
+          </div>
+          <p class="form__status" role="status" aria-live="polite"></p>
+          <p class="form__fine">Your details are used only to respond to this enquiry.</p>
+        </form>
+      </div>
+
+      <aside aria-labelledby="direct-title">
+        <p class="label eyebrow" id="direct-title">Direct contact</p>
+        <ul class="direct">
+          <li><a href={site.whatsappHref}><Icon name="chat" /><span class="label">WhatsApp</span><strong>{site.phoneDisplay}</strong></a></li>
+          <li><a href={site.phoneHref}><Icon name="phone" /><span class="label">Call</span><strong>{site.phoneDisplay}</strong></a></li>
+          <li><a href={`mailto:${site.email}?subject=Quote%20request`}><Icon name="mail" /><span class="label">Email</span><strong>{site.email}</strong></a></li>
+          {site.address && (
+            <li><div><Icon name="pin" /><span class="label">Address</span><strong>{site.address.street}, {site.address.city}</strong></div></li>
+          )}
+          {site.hours && (
+            <li><div><Icon name="truck" /><span class="label">Hours</span><strong>{site.hours}</strong></div></li>
+          )}
+        </ul>
+        <iframe class="map" title="JNT Suppliers on Google Maps" src={site.mapsEmbed} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <p><a class="arrow-link" href={site.mapsLink} rel="noopener">Open in Google Maps <Icon name="arrow" /></a></p>
+      </aside>
+    </div>
+  </section>
+
+  <script is:inline src={url('/js/quote-form.js')} defer></script>
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</Base>

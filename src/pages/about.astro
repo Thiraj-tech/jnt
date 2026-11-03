@@ -1,0 +1,93 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import QuoteCTA from '../components/QuoteCTA.astro';
+import { site, url } from '../data/site';
+import founderImg from '../assets/people/founder.jpg';
+import labImg from '../assets/scenes/02.jpeg';
+import deliveryImg from '../assets/scenes/03.jpeg';
+
+const years = site.claims.years;
+---
+<Base
+  title="About"
+  description="JNT Suppliers manufactures and imports chemical solutions for offset printing, serving commercial printers across Sri Lanka."
+>
+  <header class="page-head">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="wrap">
+      <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">About</li></ol>
+      <h1>A trusted supplier to Sri Lanka's printing industry.</h1>
+      <p class="lede">
+        JNT Suppliers manufactures and imports chemical solutions for offset printing{years ? `, and has served commercial printers of every scale for more than ${years} years` : ', serving commercial printers of every scale'}.
+      </p>
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="leadership">
+    <div class="wrap founder">
+      <div class="founder__photo crop">
+        <Image src={founderImg} alt={`${site.founder.fullName}, ${site.founder.title} of JNT Suppliers`} widths={[325]} format="webp" loading="eager" />
+      </div>
+      <div class="stack">
+        <p class="label eyebrow" id="leadership">Leadership</p>
+        <h2 class="mb-0">{site.founder.name}</h2>
+        <p class="label">{site.founder.title}</p>
+        <p>
+          Under the leadership of its founder and proprietor, JNT Suppliers has grown into an established supplier to Sri Lanka's
+          offset printing sector. The company is built on consistent product quality, dependable supply and long-term client relationships.
+        </p>
+        <p>
+          “We have always believed that our clients deserve nothing but the best, which is why we have invested in state-of-the-art
+          manufacturing processes and sourced the highest quality raw materials to produce our products. Our goal is to make sure that
+          our clients can focus on their business objectives while we take care of their chemical needs.”
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule" aria-labelledby="approach">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label eyebrow">Our approach</p>
+          <h2 id="approach">What our clients can expect</h2>
+        </div>
+        <p>Whether a client runs a large commercial print operation or a single press, they get the same product standards, documentation and service.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Quality assurance</h3>
+          <p>We invest in our manufacturing processes and source raw materials and imported products, including IPA, only from suppliers that meet our standards for quality and safety.</p>
+        </li>
+        <li>
+          <h3>Technical service</h3>
+          <p>Our team recommends the right grade for each press, plate type, ink system and water condition, and supports clients after delivery.</p>
+        </li>
+        <li>
+          <h3>Documentation</h3>
+          <p>Safety data sheets are available on request, along with product specifications and certificates of analysis for IPA.</p>
+        </li>
+        <li>
+          <h3>{site.claims.islandWideDelivery ? 'Island-wide distribution' : 'Reliable distribution'}</h3>
+          <p>Timely deliveries for businesses of every scale{site.claims.islandWideDelivery ? ', anywhere in Sri Lanka' : ''}.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--rule" aria-label="Images">
+    <div class="wrap two-col">
+      <figure class="scene">
+        <Image src={labImg} alt="Fountain solution samples being tested at a quality-control bench" widths={[600, 900, 1200]} sizes="(max-width: 860px) 100vw, 600px" format="webp" quality={68} />
+        <figcaption class="label">Quality control</figcaption>
+      </figure>
+      <figure class="scene">
+        <Image src={deliveryImg} alt="Chemical cans and drums strapped on a pallet in a delivery truck" widths={[600, 900, 1200]} sizes="(max-width: 860px) 100vw, 600px" format="webp" quality={68} />
+        <figcaption class="label">Distribution</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <QuoteCTA />
+</Base>

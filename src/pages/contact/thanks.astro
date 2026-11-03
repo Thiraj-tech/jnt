@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { site, url } from '../../data/site';
+---
+<Base title="Enquiry received" noindex>
+  <section class="section">
+    <div class="wrap">
+      <p class="label eyebrow">Enquiry received</p>
+      <h1>Thank you for your enquiry.</h1>
+      <p class="lede">A member of our team will contact you by phone or email. For urgent requirements, please contact us on WhatsApp.</p>
+      <div class="btn-row">
+        <a class="btn btn--red" href={site.whatsappHref}><Icon name="chat" />WhatsApp</a>
+        <a class="arrow-link" href={url('/products/')}>View products <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+</Base>

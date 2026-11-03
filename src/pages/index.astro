@@ -1,0 +1,146 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import RegMark from '../components/RegMark.astro';
+import QuoteCTA from '../components/QuoteCTA.astro';
+import { site, url } from '../data/site';
+import fountainImg from '../assets/products/fountain-solution.png';
+import gumImg from '../assets/products/plate-gum.png';
+import founderImg from '../assets/people/founder.jpg';
+import pressImg from '../assets/scenes/01.jpeg';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const codeRange = (p: (typeof products)[number]) => {
+  const codes = p.data.variants.map((v) => v.code);
+  return codes.length > 1 ? `${codes[0]} – ${codes.at(-1)}` : p.data.codeFamily ?? '';
+};
+---
+<Base title={site.name}>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="label eyebrow">Offset printing chemicals · Sri Lanka</p>
+        <h1 id="hero-title">Pressroom chemicals for the <em>offset printing industry.</em></h1>
+        <p class="lede">
+          JNT Suppliers manufactures and imports fountain solutions, plate care products, blanket and roller washes and
+          isopropyl alcohol for commercial printers{site.claims.islandWideDelivery ? ' across Sri Lanka' : ''}, backed by technical service and dependable supply.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--red" href={url('/contact/')}>Request a quote</a>
+          <a class="arrow-link" href={url('/products/')}>View product portfolio <Icon name="arrow" /></a>
+        </div>
+      </div>
+
+      <div class="hero__art" aria-hidden="true">
+        <div class="halftone"></div>
+        <div class="hero__block hero__block--y"></div>
+        <div class="hero__block hero__block--r"></div>
+        <Image class="hero__can hero__can--a" src={gumImg} alt="" widths={[260, 520]} sizes="(max-width: 860px) 50vw, 290px" format="webp" loading="eager" />
+        <Image class="hero__can hero__can--b" src={fountainImg} alt="" widths={[260, 520]} sizes="(max-width: 860px) 50vw, 280px" format="webp" loading="eager" fetchpriority="high" />
+        <RegMark class="hero__reg hero__reg--tl" />
+        <RegMark class="hero__reg hero__reg--br" />
+        <span class="hero__note label">JNTF-1 · hard water</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <ul class="ticket" aria-label="Capabilities">
+      <li class="ticket__cell"><span class="label">01 · Supply</span><strong>Local manufacturing and import</strong></li>
+      <li class="ticket__cell"><span class="label">02 · Formulation</span><strong>Grades for hard and soft water</strong></li>
+      <li class="ticket__cell"><span class="label">03 · Compliance</span><strong>Safety data sheets on request</strong></li>
+      {site.claims.islandWideDelivery
+        ? <li class="ticket__cell"><span class="label">04 · Distribution</span><strong>Island-wide delivery</strong></li>
+        : <li class="ticket__cell"><span class="label">04 · Service</span><strong>Technical support</strong></li>}
+    </ul>
+  </div>
+
+  <section class="section" aria-labelledby="range-title">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label eyebrow">Product portfolio</p>
+          <h2 id="range-title">A complete range of pressroom chemicals.</h2>
+        </div>
+        <p>From plate preparation to press clean-up. Each product is supplied with application guidance and technical data.</p>
+      </div>
+
+      <ul class="catalogue">
+        {products.map((p, i) => (
+          <li>
+            <a href={url(`/products/${p.id}/`)}>
+              <span class="catalogue__no">{String(i + 1).padStart(2, '0')}</span>
+              <span class="catalogue__name">
+                {p.data.shortTitle}
+                {codeRange(p) && <small>{codeRange(p)}</small>}
+              </span>
+              <span class="catalogue__sum">{p.data.summary}</span>
+              <Image class="catalogue__img" src={p.data.image} alt="" widths={[104, 208]} sizes="104px" format="webp" />
+              <span class="catalogue__go" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--rule" aria-labelledby="fount-title">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="label eyebrow">Fountain solutions</p>
+          <h2 id="fount-title">Formulated for local water conditions.</h2>
+        </div>
+        <p>Water hardness directly affects dampening performance. Our range covers hard, soft and medium water, with an alcohol-free grade for printers reducing IPA use.</p>
+      </div>
+      <div class="matcher">
+        <div class="matcher__col">
+          <span class="swatch" data-ink="cyan"></span>
+          <p class="matcher__q">Hard water</p>
+          <p class="mb-0">Buffered against calcium deposits with a stable pH, for high-speed sheet-fed presses.</p>
+          <p class="matcher__a"><span class="label">Recommended</span><span class="code">JNTF-1</span></p>
+        </div>
+        <div class="matcher__col">
+          <span class="swatch" data-ink="yellow"></span>
+          <p class="matcher__q">Soft to medium water</p>
+          <p class="mb-0">Equivalent sheet-fed performance, balanced for softer water, with protection for all plate types.</p>
+          <p class="matcher__a"><span class="label">Recommended</span><span class="code">JNTF-2</span></p>
+        </div>
+        <div class="matcher__col">
+          <span class="swatch" data-ink="red"></span>
+          <p class="matcher__q">Alcohol-free printing</p>
+          <p class="mb-0">Alcohol replacement fount for all offset inks, including UV and EB. RoHS compliant.</p>
+          <p class="matcher__a"><span class="label">Recommended</span><span class="code">JNTF-3</span></p>
+        </div>
+      </div>
+      <p class="section-link"><a class="arrow-link" href={url('/products/fountain-solution/')}>Fountain solution technical data <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <div class="band-image">
+    <Image src={pressImg} alt="Inking and dampening rollers on a sheet-fed offset press, with a printed sheet and colour bar" widths={[800, 1400, 2000, 2752]} sizes="100vw" format="webp" quality={72} />
+  </div>
+
+  <section class="section" aria-labelledby="founder-title">
+    <div class="wrap founder">
+      <div class="founder__photo crop">
+        <Image src={founderImg} alt={`${site.founder.fullName}, ${site.founder.title} of JNT Suppliers`} widths={[325]} format="webp" />
+      </div>
+      <div>
+        <p class="label eyebrow" id="founder-title">Message from the founder</p>
+        <blockquote>
+          Our clients deserve nothing but the best, which is why we have invested in state-of-the-art manufacturing processes and sourced the highest quality raw materials.
+        </blockquote>
+        <p class="founder__who">
+          <strong>{site.founder.name}</strong>
+          <span class="label">{site.founder.title}, JNT Suppliers</span>
+        </p>
+        <p><a class="arrow-link" href={url('/about/')}>About the company <Icon name="arrow" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <QuoteCTA />
+</Base>

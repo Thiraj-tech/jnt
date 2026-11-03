@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { site, url } from '../data/site';
+interface Props { product?: { id: string; title: string } }
+const { product } = Astro.props;
+const quoteHref = url(product ? `/contact/?product=${product.id}` : '/contact/');
+---
+<section class="cta" aria-labelledby="cta-title">
+  <div class="halftone" aria-hidden="true"></div>
+  <div class="wrap cta__inner">
+    <div>
+      <p class="label label--ink">Enquiries</p>
+      <h2 id="cta-title">
+        {product ? `Request a quotation for ${product.title.toLowerCase()}.` : 'Discuss your requirements with our team.'}
+      </h2>
+    </div>
+    <div>
+      <p>
+        {product
+          ? 'Share your required quantity and delivery location. We will respond with pricing, pack options and lead times.'
+          : 'We provide product recommendations and quotations for delivery anywhere in Sri Lanka.'}
+      </p>
+      <div class="btn-row">
+        <a class="btn" href={quoteHref}>Request a quote <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href={site.whatsappHref}><Icon name="chat" />WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>

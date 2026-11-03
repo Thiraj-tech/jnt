@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import RegMark from '../../components/RegMark.astro';
+import QuoteCTA from '../../components/QuoteCTA.astro';
+import { site, url } from '../../data/site';
+
+export async function getStaticPaths() {
+  const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+  return products.map((product, i) => ({
+    params: { slug: product.id },
+    props: { product, others: products.filter((_, j) => j !== i) },
+  }));
+}
+
+const { product, others } = Astro.props;
+const { Content } = await render(product);
+const d = product.data;
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: d.title,
+  description: d.seoDescription,
+  category: 'Offset printing chemicals',
+  brand: { '@type': 'Brand', name: site.name },
+  manufacturer: { '@id': `${site.url}/#business` },
+  ...(d.variants.length ? { model: d.variants.map((v) => v.code).join(', ') } : {}),
+};
+---
+<Base title={d.title} description={d.seoDescription} schema={[productSchema]}>
+  <header class="page-head">
+    <div class="wrap">
+      <ol class="crumbs label">
+        <li><a href={url('/')}>Home</a></li>
+        <li><a href={url('/products/')}>Products</a></li>
+        <li aria-current="page">{d.shortTitle}</li>
+      </ol>
+      <div class="sheet-top">
+        <div>
+          <div class="sheet-id">
+            <span class="badge">Product information</span>
+            {d.variants.length > 0 && <span class="label">{d.variants.map((v) => v.code).join(' · ')}</span>}
+          </div>
+          <h1>{d.title}</h1>
+          <div class="prose"><Content /></div>
+          <dl class="facts">
+            <div><dt>Applications</dt><dd><ul>{d.bestFor.map((b) => <li>{b}</li>)}</ul></dd></div>
+            <div><dt>Packs</dt><dd>{d.packs}</dd></div>
+            <div><dt>Documents</dt><dd>{d.documents}</dd></div>
+          </dl>
+          <div class="btn-row">
+            <a class="btn btn--red" href={url(`/contact/?product=${product.id}`)}>Request a quote</a>
+            <a class="btn btn--ghost" href={site.whatsappHref}><Icon name="chat" />WhatsApp</a>
+          </div>
+        </div>
+        <div class="sheet-top__img crop">
+          <div class="halftone" aria-hidden="true"></div>
+          <Image src={d.image} alt={d.imageAlt} widths={[420, 840]} sizes="(max-width: 860px) 90vw, 420px" format="webp" loading="eager" fetchpriority="high" />
+          <RegMark class="sheet-reg" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {d.variants.length > 0 && (
+    <section class="section" aria-labelledby="grades">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="label eyebrow">{d.variants.length} grades</p>
+            <h2 id="grades">Available grades</h2>
+          </div>
+          <p>For a recommendation specific to your press, plates, inks and water conditions, contact our technical team.</p>
+        </div>
+        <div class="variants">
+          {d.variants.map((v) => (
+            <article class="variant">
+              <span class="badge badge--red">{v.code}</span>
+              <h3>{v.name}</h3>
+              <p class="variant__for">Application: {v.bestFor}</p>
+              <p class="mb-0">{v.text}</p>
+              {v.points.length > 0 && <ul>{v.points.map((pt) => <li>{pt}</li>)}</ul>}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {(d.specs.length > 0 || d.safety) && (
+    <section class:list={['section', { 'section--rule': d.variants.length > 0 }]} aria-labelledby="specs">
+      <div class="wrap two-col">
+        <div>
+          <p class="label eyebrow">Specifications</p>
+          <h2 id="specs">Technical data</h2>
+          {d.safety && (
+            <div class="notice">
+              <Icon name="flask" />
+              <p><strong>Handling.</strong> {d.safety}</p>
+            </div>
+          )}
+        </div>
+        {d.specs.length > 0 && (
+          <table class="spec">
+            <caption class="sr-only">{d.title} specifications</caption>
+            <tbody>
+              {d.specs.map((s) => <tr><th scope="row">{s.label}</th><td>{s.value}</td></tr>)}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </section>
+  )}
+
+  {d.directions.length > 0 && (
+    <section class="section section--rule" aria-labelledby="use">
+      <div class="wrap">
+        <p class="label eyebrow">Application</p>
+        <h2 id="use">Directions for use</h2>
+        <ol class="steps">
+          {d.directions.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <QuoteCTA product={{ id: product.id, title: d.shortTitle }} />
+
+  <section class="section" aria-labelledby="more">
+    <div class="wrap">
+      <h2 id="more">Related products</h2>
+      <ul class="catalogue">
+        {others.map((p) => (
+          <li>
+            <a href={url(`/products/${p.id}/`)}>
+              <span class="catalogue__no">{p.data.codeFamily ?? ''}</span>
+              <span class="catalogue__name">{p.data.shortTitle}</span>
+              <span class="catalogue__sum">{p.data.summary}</span>
+              <Image class="catalogue__img" src={p.data.image} alt="" widths={[104, 208]} sizes="104px" format="webp" />
+              <span class="catalogue__go" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,18 @@
+# Preview the built site the way the host will serve it.
+#   ./npm.sh run build   (from site/dev)  then:  docker compose up -d --build
+#   Site:    http://localhost:8091
+#   Mailpit: http://localhost:8027  (form emails land here)
+name: jnt-site
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8091:80"
+    volumes:
+      - ../dist:/var/www/html:ro
+      - ./form-config.dev.php:/var/www/jnt-form-config.php:ro
+    depends_on: [mailpit]
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "127.0.0.1:8027:8025"

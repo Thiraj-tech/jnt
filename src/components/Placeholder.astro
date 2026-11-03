@@ -1,0 +1,10 @@
+---
+// Marks an image slot until a real or generated image is added.
+// `id` matches the numbered prompt in IMAGE-PROMPTS.md.
+interface Props { id: string; title: string; ratio?: string; class?: string }
+const { id, title, ratio = '16 / 9', class: cls } = Astro.props;
+const cssRatio = ratio.replace(/\s/g, '');
+---
+<div class:list={['ph', `ph--${cssRatio.replace('/', 'x')}`, cls]} role="img" aria-label={`Image coming soon: ${title}`}>
+  <p class="ph__label"><b>{title}</b>Image slot {id} · {ratio.replace(/\s/g, '')} · see IMAGE-PROMPTS.md</p>
+</div>

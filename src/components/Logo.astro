@@ -1,0 +1,19 @@
+---
+// Vector redraw of the JNT block logo (red / black / yellow). Replace with the
+// client's original vector file if they have one.
+interface Props { label?: boolean; onDark?: boolean }
+const { label = false, onDark = false } = Astro.props;
+const blocks = [
+  { x: 0, fill: '#f05a5b', letter: 'J' },
+  { x: 96, fill: onDark ? '#f3f0e8' : '#151515', letter: 'N', text: onDark ? '#151515' : '#fff' },
+  { x: 192, fill: '#fbb740', letter: 'T' },
+];
+---
+<svg viewBox="0 0 312 80" role="img" aria-label={label ? undefined : 'JNT Suppliers'} aria-hidden={label ? 'true' : undefined}>
+  {blocks.map((b) => (
+    <g>
+      <polygon points={`${b.x + 22},0 ${b.x + 120},0 ${b.x + 98},80 ${b.x},80`} fill={b.fill} />
+      <text x={b.x + 60} y="57" text-anchor="middle" fill={b.text ?? '#fff'} font-family="IBM Plex Sans, system-ui, sans-serif" font-weight="600" font-size="44">{b.letter}</text>
+    </g>
+  ))}
+</svg>

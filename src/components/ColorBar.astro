@@ -1,0 +1,8 @@
+---
+// CMYK print control strip: each ink at 100%, 55%, 25%.
+interface Props { tall?: boolean }
+const { tall = false } = Astro.props;
+---
+<div class:list={['colorbar', { 'colorbar--tall': tall }]} aria-hidden="true">
+  {Array.from({ length: 12 }, () => <span />)}
+</div>

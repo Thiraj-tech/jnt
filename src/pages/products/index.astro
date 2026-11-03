@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import QuoteCTA from '../../components/QuoteCTA.astro';
+import { url } from '../../data/site';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base
+  title="Products"
+  description="Fountain solution, plate cleaner, plate gum, blanket and roller wash, and isopropyl alcohol for offset printing presses in Sri Lanka."
+>
+  <header class="page-head">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="wrap">
+      <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">Products</li></ol>
+      <h1>Product portfolio</h1>
+      <p class="lede">Pressroom chemicals for every stage of the offset process, from plate preparation to press clean-up. Each product page includes application guidance and technical data.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cards">
+        {products.map((p) => (
+          <a class="card" href={url(`/products/${p.id}/`)}>
+            <div class="card__img">
+              <div class="halftone" aria-hidden="true"></div>
+              <Image src={p.data.image} alt={p.data.imageAlt} widths={[240, 480]} sizes="(max-width: 700px) 70vw, 240px" format="webp" />
+            </div>
+            <div class="card__body">
+              {p.data.codeFamily && <span class="label">{p.data.variants.length > 1 ? `${p.data.variants.length} grades · ` : ''}{p.data.codeFamily}</span>}
+              <h2>{p.data.shortTitle}</h2>
+              <p>{p.data.summary}</p>
+              <span class="card__more">Technical details →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <QuoteCTA />
+</Base>

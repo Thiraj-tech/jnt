@@ -1,6 +1,9 @@
 /* Self-hosted fonts, Latin subset only. */
-@import '@fontsource/archivo-narrow/latin-600.css';
-@import '@fontsource/archivo-narrow/latin-700.css';
+@import '@fontsource/newsreader/latin-500.css';
+@import '@fontsource/newsreader/latin-600.css';
+@import '@fontsource/newsreader/latin-700.css';
+@import '@fontsource/newsreader/latin-500-italic.css';
+@import '@fontsource/newsreader/latin-600-italic.css';
 @import '@fontsource/ibm-plex-sans/latin-400.css';
 @import '@fontsource/ibm-plex-sans/latin-400-italic.css';
 @import '@fontsource/ibm-plex-sans/latin-600.css';
@@ -23,7 +26,7 @@
   --cyan: #0093d0;
   --black: #151515;
 
-  --f-display: 'Archivo Narrow', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --f-display: 'Newsreader', 'Times New Roman', Georgia, serif;
   --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
@@ -1406,3 +1409,196 @@ main { flex: 1; }
 .scene { margin: 0; }
 .scene img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: var(--rule); }
 .scene figcaption { margin-top: 0.75rem; }
+
+/* =========================================================
+   Print feel: newsprint paper, newspaper type, ink
+   ========================================================= */
+
+/* Paper: grain + uneven tone/fibres laid over everything, like the sheet itself */
+body {
+  background-color: var(--paper);
+  background-image: url('../assets/textures/paper-mottle.svg');
+  background-size: 900px 900px;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background-image: url('../assets/textures/paper-grain.svg');
+  background-size: 320px 320px;
+  opacity: 0.3;
+}
+/* Surfaces that set their own paper colour keep the mottled tone too */
+.variant,
+.card,
+.matcher,
+.notice,
+.menu__panel,
+.site-header {
+  background-color: var(--paper);
+  background-image: url('../assets/textures/paper-mottle.svg');
+  background-size: 900px 900px;
+  background-attachment: fixed;
+}
+
+/* Newspaper headline type */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  line-height: 1.04;
+  font-variant-numeric: lining-nums;
+}
+h1 {
+  font-size: clamp(2.6rem, 6.6vw, 5.2rem);
+  letter-spacing: -0.025em;
+}
+h1 em,
+.hero h1 em {
+  font-style: italic;
+  font-weight: 600;
+}
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.catalogue__name,
+.matcher__q,
+.ticket__cell strong,
+.direct strong,
+.founder__who strong,
+.card__body h2,
+.menu__panel li a {
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+.founder blockquote {
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.22;
+}
+.founder blockquote::before {
+  font-style: normal;
+}
+.big-num {
+  font-weight: 700;
+  font-style: italic;
+}
+/* Wordmark stays in the sans so the logo lockup reads as the brand */
+.logo__text {
+  font: 600 0.95rem/1 var(--f-body);
+  letter-spacing: 0.14em;
+}
+
+/* Slight press misregistration on the big headline only */
+.hero h1 {
+  text-shadow:
+    0.6px 0.4px 0 rgb(0 147 208 / 0.28),
+    -0.5px -0.3px 0 rgb(232 71 74 / 0.22);
+}
+
+/* Masthead-style double rule under the header */
+.site-header {
+  border-bottom: 4px double var(--ink);
+}
+
+/* Drop cap on long-form intros, newspaper style */
+.prose p:first-of-type::first-letter,
+.dropcap::first-letter {
+  float: left;
+  font: 700 3.6em/0.82 var(--f-display);
+  margin: 0.06em 0.1em 0 0;
+  color: var(--red-ink);
+}
+
+/* Column rule between paired columns */
+.two-col {
+  position: relative;
+}
+@media (min-width: 861px) {
+  .two-col::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px solid var(--paper-3);
+  }
+}
+
+/* Ink splashes */
+.ink {
+  position: absolute;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+}
+.hero__ink {
+  width: 44%;
+  left: 0;
+  bottom: 2%;
+  z-index: 1;
+}
+.hero__ink--drop {
+  width: 18%;
+  right: 8%;
+  top: -2%;
+  left: auto;
+  bottom: auto;
+  z-index: 1;
+}
+.page-head .ink {
+  width: min(30vw, 300px);
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%) rotate(12deg);
+  opacity: 0.8;
+}
+.cta .ink {
+  width: min(20vw, 230px);
+  right: -2%;
+  top: -18%;
+  opacity: 0.8;
+}
+.cta .ink--drop {
+  width: min(9vw, 100px);
+  right: 22%;
+  top: auto;
+  bottom: 4%;
+  opacity: 0.85;
+}
+.cta__inner {
+  position: relative;
+  z-index: 2;
+}
+.ink-404 {
+  position: relative;
+  display: inline-block;
+}
+.ink-404 .ink {
+  width: 140%;
+  left: -20%;
+  top: -30%;
+  z-index: -1;
+  opacity: 0.35;
+}
+@media (max-width: 860px) {
+  .page-head .ink {
+    width: 160px;
+    right: -30px;
+    top: 30%;
+    opacity: 0.45;
+  }
+  .cta .ink--drop {
+    display: none;
+  }
+}
+@media print {
+  body::after {
+    display: none;
+  }
+}

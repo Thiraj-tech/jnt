@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import InkSplash from './InkSplash.astro';
 import { site, url } from '../data/site';
 interface Props { product?: { id: string; title: string } }
 const { product } = Astro.props;
@@ -7,6 +8,8 @@ const quoteHref = url(product ? `/contact/?product=${product.id}` : '/contact/')
 ---
 <section class="cta" aria-labelledby="cta-title">
   <div class="halftone" aria-hidden="true"></div>
+  <InkSplash ink="black" variant={2} />
+  <InkSplash ink="cyan" variant={3} class="ink--drop" />
   <div class="wrap cta__inner">
     <div>
       <p class="label label--ink">Enquiries</p>

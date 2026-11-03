@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import InkSplash from '../components/InkSplash.astro';
 import Base from '../layouts/Base.astro';
 import QuoteCTA from '../components/QuoteCTA.astro';
 import { site, url } from '../data/site';
@@ -15,6 +16,7 @@ const years = site.claims.years;
 >
   <header class="page-head">
     <div class="halftone" aria-hidden="true"></div>
+    <InkSplash ink="red" variant={1} />
     <div class="wrap">
       <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">About</li></ol>
       <h1>A trusted supplier to Sri Lanka's printing industry.</h1>
@@ -33,7 +35,7 @@ const years = site.claims.years;
         <p class="label eyebrow" id="leadership">Leadership</p>
         <h2 class="mb-0">{site.founder.name}</h2>
         <p class="label">{site.founder.title}</p>
-        <p>
+        <p class="dropcap">
           Under the leadership of its founder and proprietor, JNT Suppliers has grown into an established supplier to Sri Lanka's
           offset printing sector. The company is built on consistent product quality, dependable supply and long-term client relationships.
         </p>

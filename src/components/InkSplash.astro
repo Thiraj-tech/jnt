@@ -1,0 +1,33 @@
+---
+// Organic ink splash: simple shapes pushed around by a noise displacement filter.
+// Uses multiply blending so overlapping inks mix like overprinted process colours.
+interface Props {
+  ink?: 'cyan' | 'red' | 'yellow' | 'black';
+  variant?: 1 | 2 | 3;
+  class?: string;
+}
+const { ink = 'cyan', variant = 1, class: cls } = Astro.props;
+const colours = { cyan: '#0093d0', red: '#e8474a', yellow: '#fbb740', black: '#151515' };
+const id = `ink-${ink}-${variant}-${Math.random().toString(36).slice(2, 7)}`;
+const shapes = {
+  1: `<ellipse cx="200" cy="205" rx="118" ry="96"/>
+      <circle cx="338" cy="118" r="17"/><circle cx="362" cy="88" r="7"/><circle cx="72" cy="318" r="13"/>
+      <circle cx="40" cy="342" r="5"/><circle cx="300" cy="330" r="9"/><circle cx="120" cy="70" r="6"/>
+      <path d="M262 150 L372 64 L380 74 L276 168 Z"/>`,
+  2: `<ellipse cx="190" cy="190" rx="92" ry="108" transform="rotate(-25 190 190)"/>
+      <circle cx="320" cy="290" r="22"/><circle cx="352" cy="330" r="8"/><circle cx="64" cy="96" r="11"/>
+      <circle cx="96" cy="320" r="6"/><path d="M230 250 L330 372 L318 380 L216 262 Z"/>`,
+  3: `<circle cx="200" cy="200" r="58"/><circle cx="292" cy="160" r="10"/><circle cx="130" cy="290" r="14"/>
+      <circle cx="310" cy="286" r="5"/><circle cx="96" cy="132" r="7"/><circle cx="250" cy="96" r="4"/>`,
+};
+---
+<svg class:list={['ink', cls]} viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id={id} x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="3" seed={variant * 13} result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="46" xChannelSelector="R" yChannelSelector="G" result="d" />
+      <feGaussianBlur in="d" stdDeviation="0.6" />
+    </filter>
+  </defs>
+  <g fill={colours[ink]} filter={`url(#${id})`} set:html={shapes[variant]} />
+</svg>

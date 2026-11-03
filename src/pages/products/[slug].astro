@@ -1,10 +1,12 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import RegMark from '../../components/RegMark.astro';
 import QuoteCTA from '../../components/QuoteCTA.astro';
+import Faq from '../../components/Faq.astro';
+import { faqsFor, faqSchema } from '../../data/faq';
 import { site, url } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -19,18 +21,47 @@ const { product, others } = Astro.props;
 const { Content } = await render(product);
 const d = product.data;
 
-const productSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  name: d.title,
-  description: d.seoDescription,
+const questions = faqsFor(product.id);
+const guides = (await getCollection('guides')).filter((g) => g.data.products.includes(product.id)).sort((a, b) => a.data.order - b.data.order);
+const pageUrl = `${site.url}/products/${product.id}/`;
+const productImg = await getImage({ src: d.image, width: 800, format: 'webp' });
+const productImgUrl = new URL(productImg.src, site.url).href;
+const common = {
   category: 'Offset printing chemicals',
   brand: { '@type': 'Brand', name: site.name },
   manufacturer: { '@id': `${site.url}/#business` },
-  ...(d.variants.length ? { model: d.variants.map((v) => v.code).join(', ') } : {}),
+  image: productImgUrl,
+};
+// One Product for the family; each grade is listed as its own Product with its code as the SKU.
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  '@id': `${pageUrl}#product`,
+  name: d.title,
+  description: d.seoDescription,
+  url: pageUrl,
+  ...common,
+  ...(d.variants.length
+    ? {
+        hasVariant: d.variants.map((v) => ({
+          '@type': 'Product',
+          name: `${d.shortTitle} ${v.code}: ${v.name}`,
+          sku: v.code,
+          description: v.text,
+          url: `${pageUrl}#${v.code.toLowerCase()}`,
+          ...common,
+        })),
+      }
+    : {}),
 };
 ---
-<Base title={d.title} description={d.seoDescription} schema={[productSchema]}>
+<Base
+  title={d.seoTitle ?? d.title}
+  description={d.seoDescription}
+  schema={questions.length ? [productSchema, faqSchema(questions)] : [productSchema]}
+  image={d.image}
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/products/' }, { name: d.shortTitle, path: `/products/${product.id}/` }]}
+>
   <header class="page-head page-head--plain">
     <div class="wrap">
       <ol class="crumbs label">
@@ -44,7 +75,7 @@ const productSchema = {
             <span class="badge">Product information</span>
             {d.variants.length > 0 && <span class="label">{d.variants.map((v) => v.code).join(' · ')}</span>}
           </div>
-          <h1>{d.title}</h1>
+          <h1>{d.h1 ?? d.title}</h1>
           <div class="prose"><Content /></div>
           <dl class="facts">
             <div><dt>Applications</dt><dd><ul>{d.bestFor.map((b) => <li>{b}</li>)}</ul></dd></div>
@@ -77,7 +108,7 @@ const productSchema = {
         </div>
         <div class="variants">
           {d.variants.map((v) => (
-            <article class="variant">
+            <article class="variant" id={v.code.toLowerCase()}>
               <span class="badge badge--red">{v.code}</span>
               <h3>{v.name}</h3>
               <p class="variant__for">Application: {v.bestFor}</p>
@@ -126,6 +157,35 @@ const productSchema = {
       </div>
     </section>
   )}
+
+  {guides.length > 0 && (
+    <section class="section section--rule" aria-labelledby="guides-title">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="label eyebrow">Guides</p>
+            <h2 id="guides-title">Practical advice for {d.shortTitle.toLowerCase()}.</h2>
+          </div>
+        </div>
+        <ol class="guide-list">
+          {guides.map((g) => (
+            <li>
+              <a href={url(`/guides/${g.id}/`)}>
+                <span class="guide-list__no label">Guide</span>
+                <span class="guide-list__body">
+                  <span class="guide-list__title">{g.data.title}</span>
+                  <span class="guide-list__sum">{g.data.summary}</span>
+                </span>
+                <span class="catalogue__go" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  {questions.length > 0 && <Faq items={questions} title={`Questions about ${d.shortTitle.toLowerCase()}.`} />}
 
   <QuoteCTA product={{ id: product.id, title: d.shortTitle }} />
 

@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, getEntries, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import QuoteCTA from '../../components/QuoteCTA.astro';
+import { site, url } from '../../data/site';
+
+export async function getStaticPaths() {
+  const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+  return guides.map((guide) => ({
+    params: { slug: guide.id },
+    props: { guide, others: guides.filter((g) => g.id !== guide.id) },
+  }));
+}
+
+const { guide, others } = Astro.props;
+const { Content } = await render(guide);
+const d = guide.data;
+const products = await getEntries(d.products.map((id) => ({ collection: 'products', id })));
+const pageUrl = `${site.url}/guides/${guide.id}/`;
+const fmt = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  description: d.description,
+  url: pageUrl,
+  mainEntityOfPage: pageUrl,
+  datePublished: d.published.toISOString().slice(0, 10),
+  dateModified: (d.updated ?? d.published).toISOString().slice(0, 10),
+  inLanguage: 'en-LK',
+  author: { '@id': `${site.url}/#business` },
+  publisher: { '@id': `${site.url}/#business` },
+  about: products.map((p) => ({ '@type': 'Thing', name: p.data.title })),
+};
+---
+<Base
+  title={d.seoTitle}
+  description={d.description}
+  schema={[articleSchema]}
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Guides', path: '/guides/' }, { name: d.title, path: `/guides/${guide.id}/` }]}
+>
+  <header class="page-head page-head--plain">
+    <div class="wrap">
+      <ol class="crumbs label">
+        <li><a href={url('/')}>Home</a></li>
+        <li><a href={url('/guides/')}>Guides</a></li>
+        <li aria-current="page">{d.title}</li>
+      </ol>
+      <h1 class="article-title">{d.title}</h1>
+      <p class="label">
+        {site.name} technical team ·{' '}
+        <time datetime={(d.updated ?? d.published).toISOString().slice(0, 10)}>{d.updated ? `Updated ${fmt(d.updated)}` : fmt(d.published)}</time>
+      </p>
+    </div>
+  </header>
+
+  <section class="section article-section">
+    <div class="wrap article-grid">
+      <article class="article">
+        <Content />
+      </article>
+
+      {products.length > 0 && (
+        <aside class="article-aside" aria-labelledby="used-title">
+          <p class="label eyebrow" id="used-title">Products in this guide</p>
+          <ul class="article-products">
+            {products.map((p) => (
+              <li>
+                <a href={url(`/products/${p.id}/`)}>
+                  <Image src={p.data.image} alt="" widths={[80, 160]} sizes="80px" format="webp" />
+                  <span>
+                    <strong>{p.data.shortTitle}</strong>
+                    {p.data.variants.length > 0 && <small>{p.data.variants.map((v) => v.code).join(' · ')}</small>}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a class="btn btn--red" href={url(`/contact/?product=${products[0].id}`)}>Request a quote</a>
+        </aside>
+      )}
+    </div>
+  </section>
+
+  <QuoteCTA />
+
+  <section class="section" aria-labelledby="more-guides">
+    <div class="wrap">
+      <h2 id="more-guides">More guides</h2>
+      <ol class="guide-list">
+        {others.map((g) => (
+          <li>
+            <a href={url(`/guides/${g.id}/`)}>
+              <span class="guide-list__no label">Guide</span>
+              <span class="guide-list__body">
+                <span class="guide-list__title">{g.data.title}</span>
+                <span class="guide-list__sum">{g.data.summary}</span>
+              </span>
+              <span class="catalogue__go" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>

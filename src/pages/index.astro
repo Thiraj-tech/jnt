@@ -5,6 +5,8 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import RegMark from '../components/RegMark.astro';
 import QuoteCTA from '../components/QuoteCTA.astro';
+import Faq from '../components/Faq.astro';
+import { faqs, faqSchema } from '../data/faq';
 import { site, url } from '../data/site';
 import fountainImg from '../assets/products/fountain-solution.png';
 import gumImg from '../assets/products/plate-gum.png';
@@ -16,8 +18,13 @@ const codeRange = (p: (typeof products)[number]) => {
   const codes = p.data.variants.map((v) => v.code);
   return codes.length > 1 ? `${codes[0]} – ${codes.at(-1)}` : p.data.codeFamily ?? '';
 };
+
 ---
-<Base title={site.name}>
+<Base
+  title="Offset Printing Chemicals in Sri Lanka | JNT Suppliers"
+  description="Fountain solution, plate cleaner, plate gum, roller wash and IPA for offset printers in Sri Lanka. Grades for local water, SDS on request. Request a quote."
+  schema={[faqSchema(faqs)]}
+>
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero__grid">
       <div>
@@ -126,7 +133,7 @@ const codeRange = (p: (typeof products)[number]) => {
   <section class="section" aria-labelledby="founder-title">
     <div class="wrap founder">
       <div class="founder__photo crop">
-        <Image src={founderImg} alt={`${site.founder.fullName}, ${site.founder.title} of JNT Suppliers`} widths={[325]} format="webp" />
+        <Image src={founderImg} alt={`${site.founder.fullName}, ${site.founder.title} of JNT Suppliers`} widths={[325, 650]} sizes="(max-width: 600px) 260px, 325px" format="webp" />
       </div>
       <div>
         <p class="label eyebrow" id="founder-title">Message from the founder</p>
@@ -141,6 +148,8 @@ const codeRange = (p: (typeof products)[number]) => {
       </div>
     </div>
   </section>
+
+  <Faq />
 
   <QuoteCTA />
 </Base>

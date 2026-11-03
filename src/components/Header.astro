@@ -5,6 +5,7 @@ import { site, url } from '../data/site';
 const path = Astro.url.pathname;
 const links = [
   { href: url('/products/'), label: 'Products' },
+  { href: url('/guides/'), label: 'Guides' },
   { href: url('/about/'), label: 'About' },
   { href: url('/contact/'), label: 'Contact' },
 ];
@@ -14,9 +15,9 @@ const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
 <header class="site-header">
   <ColorBar />
   <div class="wrap site-header__inner">
-    <a class="logo" href={url('/')} aria-label="JNT Suppliers, home">
+    <a class="logo" href={url('/')}>
       <Logo label />
-      <span class="logo__text">Suppliers</span>
+      <span class="sr-only">JNT </span><span class="logo__text">Suppliers</span>
     </a>
     <nav class="nav" aria-label="Main">
       <ul>

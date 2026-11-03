@@ -61,6 +61,10 @@ Settings and the Turnstile secret go in `/home/jntsuppl/jnt-form-config.php`, ou
 - [ ] The founder quote is his own wording from the old About page. Check he's happy with it.
 - [ ] Real Facebook page link (`site.ts`).
 
+## Guides (`src/content/guides/`)
+
+The four guides were drafted from the product data plus standard pressroom practice. Ask the client's technical team to read and correct them before go-live; they can also add their own experience, which makes the guides stronger for search. Set `updated:` in a guide's front matter when it changes.
+
 ## Go-live steps (on the server)
 
 1. Make room: check `public_html/wp-content/cache.tar.gz` (109 MB) and delete it. A copy is kept locally in `../public_html`.
@@ -68,5 +72,10 @@ Settings and the Turnstile secret go in `/home/jntsuppl/jnt-form-config.php`, ou
 3. After the client approves: remove WordPress from `public_html` (the full backup is in `../public_html` and `../jntsuppl_wp821.sql`), do a normal build, upload `dist/` to `public_html/`, and drop the WordPress database in cPanel.
 4. In cPanel: create `website@jntsuppliers.com` (or allow it as a sender), turn on SPF and DKIM under Email Deliverability, and add the Turnstile keys. Then send a test enquiry.
 5. If cPanel's MultiPHP Manager adds a PHP handler block to `.htaccess`, keep that block.
-6. Resubmit `https://www.jntsuppliers.com/sitemap-index.xml` in Google Search Console.
+6. Search engines:
+   - Verify the domain in Google Search Console and Bing Webmaster Tools with a DNS TXT record, so no verification files go on the server.
+   - Submit `https://www.jntsuppliers.com/sitemap-index.xml` to both.
+   - Use URL Inspection to request indexing of the home page and the 5 product pages.
+   - Over the following weeks, check the Pages report: old WordPress URLs should show as redirected (301) or removed (410), not as 404 errors.
+   - Create or claim the Google Business Profile. It needs the street address; add the same address to `site.address` in `src/data/site.ts` so the structured data matches.
 7. Delete the `localcopy` FTP account and remove its password from `../.env`.

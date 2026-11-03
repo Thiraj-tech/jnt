@@ -17,6 +17,13 @@ const redirects = {
   'top-quality-printing-solutions-and-manufacturing-chemical-solutions-for-offset-printing': 'about/',
   'importing-and-manufacturing-top-quality-products-for-offset-printing': '',
   'customer-service': 'contact/',
+  // The old site also served each product at the root, and most internal links used these.
+  'fountain-solution': 'products/fountain-solution/',
+  'plate-cleaner': 'products/plate-cleaner/',
+  'plate-gum': 'products/plate-gum/',
+  'roller-wash': 'products/roller-wash/',
+  'isopropyl-alcohol': 'products/isopropyl-alcohol/',
+  home: '',
 };
 
 const csp = [
@@ -64,6 +71,8 @@ ${Object.entries(redirects)
   .join('\n')}
 RewriteRule ^(wp-admin|wp-login\\.php|wp-content|wp-includes|xmlrpc\\.php|wp-json) - [G,L]
 RewriteRule ^feed/?$ - [G,L]
+# WordPress archives and builder leftovers that no longer exist
+RewriteRule ^(category|tag|author|cartflows_step|elementor-hf|\\d{4}/\\d{2})(/|$) - [G,L]
 ` : ''}
 </IfModule>
 

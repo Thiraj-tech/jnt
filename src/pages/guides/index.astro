@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import QuoteCTA from '../../components/QuoteCTA.astro';
+import { url } from '../../data/site';
+
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base
+  title="Offset Printing Guides for Pressrooms | JNT Suppliers"
+  description="Practical guides for offset printers: choosing fountain solution, running without IPA, storing plates, and blanket and roller wash-ups."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Guides', path: '/guides/' }]}
+>
+  <header class="page-head">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="wrap">
+      <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">Guides</li></ol>
+      <h1>Offset printing guides.</h1>
+      <p class="lede">Practical advice for the pressroom, from our technical team: dampening, plate care and press clean-up.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap">
+      <ol class="guide-list">
+        {guides.map((g, i) => (
+          <li>
+            <a href={url(`/guides/${g.id}/`)}>
+              <span class="guide-list__no label">{String(i + 1).padStart(2, '0')}</span>
+              <span class="guide-list__body">
+                <span class="guide-list__title">{g.data.title}</span>
+                <span class="guide-list__sum">{g.data.summary}</span>
+              </span>
+              <span class="catalogue__go" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <QuoteCTA />
+</Base>

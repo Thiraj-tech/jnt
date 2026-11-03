@@ -1,9 +1,11 @@
 ---
 title: Plate Gum
 shortTitle: Plate Gum
+seoTitle: "Plate Gum (Gum Arabic) for Offset Plates | JNT Suppliers"
+h1: "Plate Gum for Offset Plates"
 order: 3
 summary: Pure gum arabic plate gum for processors, storage, metering rollers and as a fount additive.
-seoDescription: Plate gum made from pure gum arabic for offset printing plates. For plate processors, hand gumming, metering rollers and as a fountain solution additive. Supplied in Sri Lanka by JNT Suppliers.
+seoDescription: "Pure gum arabic plate gum for offset printing in Sri Lanka. For plate processors, plate storage, metering rollers and as a fountain solution additive."
 image: ../../assets/products/plate-gum.png
 imageAlt: 5 litre can of JNT plate gum
 packs: 5 L can · bulk on request
@@ -32,6 +34,6 @@ directions:
     text: Add to pre-mixed fountain solution in steps of 0.25% per litre to stop scumming and keep reverses open.
 ---
 
-Manufactured from pure gum arabic and chemical gum powders, blended with purified water and micro-filtered to ensure it is free of contaminants. A food-grade biocide maintains quality and freshness in storage.
+Our plate gum is manufactured from pure gum arabic and chemical gum powders, blended with purified water and micro-filtered to ensure it is free of contaminants. A food-grade biocide maintains quality and freshness in storage.
 
-The stable, viscous formulation provides economical coverage.
+The stable, viscous formulation provides economical coverage in plate processors, for gumming plates by hand before storage, and on metering rollers. It can also be added to [fountain solution](../fountain-solution/) to keep reverses open. Before a gummed plate returns to press, remove the gum with a [plate cleaner](../plate-cleaner/).

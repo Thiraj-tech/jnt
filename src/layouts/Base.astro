@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import shareSrc from '../assets/scenes/04.jpeg';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -12,10 +13,15 @@ interface Props {
   description?: string;
   /** Extra JSON-LD objects for this page. */
   schema?: Record<string, unknown>[];
+  /** Visible breadcrumb trail, also output as BreadcrumbList JSON-LD. Paths are without the base. */
+  breadcrumbs?: { name: string; path: string }[];
+  /** Social share image; defaults to the press scene. */
+  image?: ImageMetadata;
   noindex?: boolean;
 }
-const { title, description = site.description, schema = [], noindex = false } = Astro.props;
-const fullTitle = title === site.name ? `${site.name} · ${site.tagline}` : `${title} · ${site.name}`;
+const { title, description = site.description, schema = [], breadcrumbs = [], image, noindex = false } = Astro.props;
+// A title that already names the business is used as written; short titles get the name appended.
+const fullTitle = title.includes(site.name) ? title : `${title} · ${site.name}`;
 // Canonical always points at the live root, even on the staging copy.
 const pathNoBase = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 const canonical = new URL(pathNoBase, site.url).href;
@@ -30,15 +36,41 @@ const business = {
   telephone: site.phoneHref.replace('tel:', ''),
   email: site.email,
   areaServed: { '@type': 'Country', name: 'Sri Lanka' },
+  knowsAbout: ['Offset printing chemicals', 'Fountain solution', 'Plate cleaner', 'Plate gum', 'Blanket and roller wash', 'Isopropyl alcohol'],
   founder: { '@type': 'Person', name: site.founder.fullName },
   sameAs: [site.facebook],
   ...(site.address
     ? { address: { '@type': 'PostalAddress', streetAddress: site.address.street, addressLocality: site.address.city, addressCountry: 'LK' } }
     : {}),
 };
-const ld = [business, ...schema];
-const share = await getImage({ src: shareSrc, width: 1200, height: 630, fit: 'cover', position: 'right', format: 'jpeg', quality: 80 });
+const sceneShare = await getImage({ src: shareSrc, width: 1200, height: 630, fit: 'cover', position: 'right', format: 'jpeg', quality: 80 });
+const share = image
+  ? await getImage({ src: image, width: 1200, height: 630, fit: 'contain', background: '#f3f0e8', format: 'jpeg', quality: 80 })
+  : sceneShare;
 const shareUrl = new URL(share.src, site.url).href;
+const abs = (path: string) => new URL(path, site.url).href;
+
+Object.assign(business, {
+  logo: abs('/favicon.svg'),
+  image: new URL(sceneShare.src, site.url).href,
+});
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  name: site.name,
+  url: `${site.url}/`,
+  inLanguage: 'en-LK',
+  publisher: { '@id': `${site.url}/#business` },
+};
+const crumbSchema = breadcrumbs.length
+  ? [{
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.path) })),
+    }]
+  : [];
+const ld = [business, website, ...crumbSchema, ...schema];
 ---
 <!doctype html>
 <html lang="en-LK">

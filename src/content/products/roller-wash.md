@@ -1,6 +1,8 @@
 ---
 title: Blanket & Roller Wash
 shortTitle: Roller Wash
+seoTitle: "Blanket and Roller Wash for Offset Presses | JNT Suppliers"
+h1: "Blanket and Roller Wash"
 order: 4
 summary: Water-miscible wash for blankets and rollers, chosen for cleaning power and safer handling.
 seoDescription: Water-miscible blanket and roller wash for offset presses. Supplied across Sri Lanka by JNT Suppliers with SDS on request.
@@ -19,6 +21,6 @@ directions:
 safety: Flammable liquid. Keep away from heat and open flames, use with good ventilation, and wear gloves and eye protection. SDS supplied.
 ---
 
-A water-miscible wash removes ink from blankets and rollers and mixes with water, allowing wash-ups to lift both ink and water-based residue.
+Our water-miscible blanket wash and roller wash removes ink from offset blankets and inking rollers. Because it mixes with water, a single wash-up lifts both ink and water-based residue, at colour changes and at the end of a run.
 
 In selecting raw materials, we balance cleaning efficiency with operator safety, environmental impact and material compatibility. Our objective is to reduce and replace harmful substances wherever an equally effective alternative exists, from formulation through to packaging.

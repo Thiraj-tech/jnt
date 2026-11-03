@@ -7,8 +7,9 @@ import { site, url, turnstileSiteKey, isPreview } from '../../data/site';
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base
-  title="Contact"
-  description="Contact JNT Suppliers for quotations, product information and technical guidance on offset printing chemicals."
+  title="Contact and Quotations | JNT Suppliers"
+  description="Contact JNT Suppliers for quotations, product information and technical guidance on offset printing chemicals in Sri Lanka. Call or WhatsApp +94 77 335 9286."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact/' }]}
 >
   <header class="page-head">
     <div class="halftone" aria-hidden="true"></div>

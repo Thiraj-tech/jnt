@@ -1,10 +1,12 @@
 ---
 title: Plate Cleaner
 shortTitle: Plate Cleaner
+seoTitle: "Offset Plate Cleaner in Sri Lanka | JNT Suppliers"
+h1: "Offset Plate Cleaner"
 order: 2
 codeFamily: PJNT
 summary: Four plate cleaners for scum, scratches, oxidation, UV inks and plate storage.
-seoDescription: Plate cleaners for offset printing plates in Sri Lanka. Alkaline, UV and conventional ink, high-quality and economical scratch-removing grades for positive and negative aluminium plates.
+seoDescription: "Plate cleaners for offset printing plates in Sri Lanka. Four grades for scum, scratches, oxidation, and UV and conventional inks on aluminium plates."
 image: ../../assets/products/plate-cleaner.png
 imageAlt: 5 litre can of JNT plate cleaner
 packs: 5 L can · bulk on request
@@ -52,6 +54,6 @@ directions:
 safety: Some grades are corrosive. Wear gloves and eye protection, and read the SDS before use.
 ---
 
-Plates for repeat jobs are frequently stored rather than remade. Returning a stored plate to service requires a properly formulated cleaner that removes preserving gum and residual ink without damaging the image area.
+Plates for repeat jobs are frequently stored rather than remade. Returning a stored plate to service requires a properly formulated offset plate cleaner that removes preserving gum and residual ink without damaging the image area.
 
-Our plate cleaners also lubricate the plate for fast roll-up on press and serve as a short-term preserver between runs.
+Our plate cleaners also work as scratch removers, lubricate the plate for fast roll-up on press and serve as a short-term preserver between runs. For longer storage, protect the cleaned plate with [plate gum](../plate-gum/).

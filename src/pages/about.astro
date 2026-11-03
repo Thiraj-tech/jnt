@@ -10,8 +10,9 @@ import deliveryImg from '../assets/scenes/03.jpeg';
 const years = site.claims.years;
 ---
 <Base
-  title="About"
+  title="About JNT Suppliers | Offset Printing Chemicals, Sri Lanka"
   description="JNT Suppliers manufactures and imports chemical solutions for offset printing, serving commercial printers across Sri Lanka."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'About', path: '/about/' }]}
 >
   <header class="page-head">
     <div class="halftone" aria-hidden="true"></div>
@@ -27,7 +28,7 @@ const years = site.claims.years;
   <section class="section" aria-labelledby="leadership">
     <div class="wrap founder">
       <div class="founder__photo crop">
-        <Image src={founderImg} alt={`${site.founder.fullName}, ${site.founder.title} of JNT Suppliers`} widths={[325]} format="webp" loading="eager" />
+        <Image src={founderImg} alt={`${site.founder.fullName}, ${site.founder.title} of JNT Suppliers`} widths={[325, 650]} sizes="(max-width: 600px) 260px, 325px" format="webp" loading="eager" />
       </div>
       <div class="stack">
         <p class="label eyebrow" id="leadership">Leadership</p>

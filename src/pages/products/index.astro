@@ -8,14 +8,15 @@ import { url } from '../../data/site';
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base
-  title="Products"
+  title="Offset Printing Chemicals and Supplies | JNT Suppliers"
   description="Fountain solution, plate cleaner, plate gum, blanket and roller wash, and isopropyl alcohol for offset printing presses in Sri Lanka."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/products/' }]}
 >
   <header class="page-head">
     <div class="halftone" aria-hidden="true"></div>
     <div class="wrap">
       <ol class="crumbs label"><li><a href={url('/')}>Home</a></li><li aria-current="page">Products</li></ol>
-      <h1>Product portfolio</h1>
+      <h1>Offset printing chemicals.</h1>
       <p class="lede">Pressroom chemicals for every stage of the offset process, from plate preparation to press clean-up. Each product page includes application guidance and technical data.</p>
     </div>
   </header>

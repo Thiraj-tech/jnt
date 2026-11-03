@@ -1,0 +1,36 @@
+---
+// Q&A list built on <details>, so it opens and closes without JavaScript (and within the CSP).
+import Icon from './Icon.astro';
+import { url } from '../data/site';
+import { faqs, type Faq } from '../data/faq';
+
+interface Props {
+  items?: Faq[];
+  title?: string;
+}
+const { items = faqs, title = 'Common questions from printers.' } = Astro.props;
+---
+<section class="section section--rule" aria-labelledby="faq-title">
+  <div class="wrap faq">
+    <div class="faq__intro">
+      <p class="label eyebrow">Questions and answers</p>
+      <h2 id="faq-title">{title}</h2>
+      <p>If your question is not listed, our team can advise by phone or WhatsApp.</p>
+    </div>
+    <div class="faq__list">
+      {items.map((f, i) => (
+        <details class="faq__item" open={i === 0}>
+          <summary>
+            <span class="faq__no label">Q.{String(i + 1).padStart(2, '0')}</span>
+            <span class="faq__q">{f.q}</span>
+            <span class="faq__mark" aria-hidden="true"></span>
+          </summary>
+          <div class="faq__a">
+            <p>{f.a}</p>
+            {f.link && <p><a class="arrow-link" href={url(f.link.href)}>{f.link.text} <Icon name="arrow" /></a></p>}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

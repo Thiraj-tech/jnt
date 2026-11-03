@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
-import { site, url, turnstileSiteKey } from '../../data/site';
+import { site, url, turnstileSiteKey, isPreview } from '../../data/site';
 
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 ---
@@ -27,7 +27,8 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
         <noscript>
           <p class="notice">The quote form needs JavaScript for its spam check. Please WhatsApp, call or email us using the details on this page.</p>
         </noscript>
-        <form class="form" id="quote-form" method="post" action={url("/quote.php")} novalidate hidden>
+        {isPreview && <p class="notice">Preview copy: this form is shown for review only and does not send. Enquiries go through WhatsApp, phone or email for now.</p>}
+        <form class="form" id="quote-form" method="post" action={url("/quote.php")} novalidate hidden data-preview={isPreview ? "1" : undefined}>
           <div class="form__row">
             <div class="field">
               <label for="f-name">Full name</label>
@@ -73,7 +74,7 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
           </div>
           <input type="hidden" name="t" value="" />
 
-          <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible"></div>
+          {!isPreview && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible"></div>}
 
           <div class="btn-row">
             <button class="btn btn--red" type="submit">Submit enquiry <Icon name="arrow" /></button>
@@ -103,5 +104,5 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
   </section>
 
   <script is:inline src={url('/js/quote-form.js')} defer></script>
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  {!isPreview && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 </Base>

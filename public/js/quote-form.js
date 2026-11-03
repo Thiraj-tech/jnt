@@ -62,6 +62,10 @@
       setStatus('Please check the highlighted fields.', 'error');
       return;
     }
+    if (form.dataset.preview) {
+      setStatus('Preview only: the form is not connected yet, so nothing was sent.', 'error');
+      return;
+    }
     if (!form.querySelector('[name="cf-turnstile-response"]') || !form.querySelector('[name="cf-turnstile-response"]').value) {
       setStatus('Please wait for the spam check to finish, then send again.', 'error');
       return;

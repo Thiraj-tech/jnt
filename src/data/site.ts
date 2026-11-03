@@ -33,6 +33,9 @@ export const site = {
 export const turnstileSiteKey =
   import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 
+/** Static preview (GitHub Pages): no PHP, so the form doesn't send. */
+export const isPreview = process.env.PREVIEW === '1';
+
 export const isStaging = import.meta.env.STAGING === '1' || process.env.STAGING === '1';
 
 /** Prefix an internal path with the configured base (so /new/ staging works). */

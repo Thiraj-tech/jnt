@@ -29,9 +29,10 @@ export const site = {
   },
 };
 
-// Cloudflare's always-pass test key is used unless a real one is set at build time.
+// Without a real key (set at build time), Cloudflare's test key is used. It always shows the
+// "Verify you are human" checkbox, so local and preview builds look like the strictest case.
 export const turnstileSiteKey =
-  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '3x00000000000000000000FF';
 
 /** Static preview (GitHub Pages): no PHP, so the form doesn't send. */
 export const isPreview = process.env.PREVIEW === '1';

@@ -1,0 +1,10 @@
+---
+// Wait indicator: hidden by default and shown only by /js/loader.js, so without
+// JavaScript it never appears. Three ink blocks print in turn, like press units.
+---
+<div class="loader" id="loader" hidden>
+  <div class="loader__card">
+    <span class="loader__blocks" aria-hidden="true"><i></i><i></i><i></i></span>
+    <p class="loader__text label" role="status" aria-live="polite">Loading…</p>
+  </div>
+</div>

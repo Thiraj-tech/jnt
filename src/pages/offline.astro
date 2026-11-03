@@ -1,0 +1,20 @@
+---
+// Served by the service worker (public/sw.js) when a page can't load and no saved copy exists.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+<Base title="You are offline" noindex>
+  <section class="section offline">
+    <div class="wrap">
+      <span class="offline__blocks" aria-hidden="true"><i></i><i></i><i></i></span>
+      <h1>You are offline.</h1>
+      <p class="lede">This page could not load because your device is not connected to the internet. Pages you have already opened are still available.</p>
+      <div class="btn-row">
+        <button class="btn btn--red" type="button" data-retry>Try again</button>
+        <a class="btn btn--ghost" href={site.phoneHref}><Icon name="phone" />Call {site.phoneDisplay}</a>
+      </div>
+      <p class="offline__note">Phone calls work without an internet connection.</p>
+    </div>
+  </section>
+</Base>

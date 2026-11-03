@@ -6,6 +6,7 @@ import shareSrc from '../assets/scenes/04.jpeg';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileBar from '../components/MobileBar.astro';
+import Loader from '../components/Loader.astro';
 import { site, url, isStaging } from '../data/site';
 
 interface Props {
@@ -51,7 +52,7 @@ const shareUrl = new URL(share.src, site.url).href;
 const abs = (path: string) => new URL(path, site.url).href;
 
 Object.assign(business, {
-  logo: abs('/favicon.svg'),
+  logo: abs('/logo.svg'),
   image: new URL(sceneShare.src, site.url).href,
 });
 const website = {
@@ -93,6 +94,7 @@ const ld = [business, website, ...crumbSchema, ...schema];
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline src={url('/js/loader.js')} defer></script>
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   </head>
   <body>
@@ -102,5 +104,6 @@ const ld = [business, website, ...crumbSchema, ...schema];
     </main>
     <Footer />
     <MobileBar />
+    <Loader />
   </body>
 </html>

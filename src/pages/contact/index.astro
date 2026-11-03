@@ -75,7 +75,11 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
           </div>
           <input type="hidden" name="t" value="" />
 
-          {!isPreview && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible"></div>}
+          <div class="field field--check">
+            <span class="field__label" id="spam-label">Spam check</span>
+            <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible" data-appearance="always" data-language="en" data-callback="jntSpamCheckDone" data-expired-callback="jntSpamCheckExpired" data-error-callback="jntSpamCheckExpired"></div>
+            <p class="field__hint" id="spam-hint">If a box appears, tick it to confirm you are not a robot.</p>
+          </div>
 
           <div class="btn-row">
             <button class="btn btn--red" type="submit">Submit enquiry <Icon name="arrow" /></button>
@@ -105,5 +109,5 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
   </section>
 
   <script is:inline src={url('/js/quote-form.js')} defer></script>
-  {!isPreview && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </Base>

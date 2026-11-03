@@ -44,7 +44,9 @@ Spam and abuse checks, in order:
 2. A hidden honeypot field and a minimum fill time of 3 seconds. Bots that trip either one get a fake success.
 3. Rate limit: 5 submissions per IP per hour.
 4. Server-side validation, with line breaks stripped from every value used in a header.
-5. Cloudflare Turnstile, verified on the server.
+5. Cloudflare Turnstile, shown on the form as a "Spam check" and verified on the server. Without a real key, builds use Cloudflare's test key, which always shows the "Verify you are human" checkbox and the "For testing only" note.
+   - To set up: in the Cloudflare dashboard, go to Turnstile and add a widget for `jntsuppliers.com` and `www.jntsuppliers.com` with **Widget mode: Managed**. Cloudflare has no setting that makes every visitor click. In Managed mode most visitors see the widget tick itself, and suspicious visitors must tick the box.
+   - Build with `PUBLIC_TURNSTILE_SITE_KEY=<site key>`, and put the secret key in the config file.
 
 The email is sent with PHP `mail()` from `website@jntsuppliers.com`, with Reply-To set to the customer's address.
 

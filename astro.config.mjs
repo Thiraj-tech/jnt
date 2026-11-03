@@ -16,7 +16,7 @@ export default defineConfig({
     inlineStylesheets: 'never',
   },
   // No sitemap on the staging copy.
-  integrations: staging ? [] : [sitemap({ filter: (page) => !page.includes('/contact/thanks/') })],
+  integrations: staging ? [] : [sitemap({ filter: (page) => !page.includes('/contact/thanks/') && !page.includes('/offline/') })],
   vite: {
     build: { assetsInlineLimit: 0 },
   },

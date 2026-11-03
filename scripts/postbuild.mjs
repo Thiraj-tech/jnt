@@ -1,6 +1,7 @@
 // Writes dist/.htaccess and dist/robots.txt for the chosen base path.
 // Staging (STAGING=1) adds noindex everywhere and blocks crawlers.
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 
 const base = (process.env.SITE_BASE || '/').replace(/\/?$/, '/');
 const staging = process.env.STAGING === '1';
@@ -98,6 +99,10 @@ Header always unset X-Powered-By
 <FilesMatch "\\.html$">
   Header set Cache-Control "no-cache"
 </FilesMatch>
+# Scripts without a fingerprint, and the service worker, must pick up new versions straight away.
+<If "%{REQUEST_URI} =~ m#/(js/[^/]+|sw)\\.js$#">
+  Header set Cache-Control "no-cache"
+</If>
 </IfModule>
 
 <IfModule mod_deflate.c>
@@ -111,5 +116,25 @@ const robots = staging
   ? 'User-agent: *\nDisallow: /\n'
   : `User-agent: *\nAllow: /\n\nSitemap: https://www.jntsuppliers.com/sitemap-index.xml\n`;
 writeFileSync('dist/robots.txt', robots);
+
+// Service worker: precache the offline page and the files it needs, versioned by their content.
+const offlineHtml = readFileSync('dist/offline/index.html', 'utf8');
+const assets = [...new Set([...offlineHtml.matchAll(/(?:href|src)="([^"]+\.(?:css|js|woff2|svg))"/g)].map((m) => m[1]))]
+  .filter((u) => u.startsWith(base));
+// Fonts are referenced from the CSS, not the HTML.
+for (const css of assets.filter((u) => u.endsWith('.css'))) {
+  const text = readFileSync('dist' + css.slice(base.length - 1), 'utf8');
+  for (const m of text.matchAll(/url\(([^)]+instrument-sans-latin-wdth-normal[^)]+\.woff2)\)/g)) assets.push(new URL(m[1], 'https://x' + css).pathname);
+}
+const precache = [base + 'offline/', ...new Set(assets)];
+const version = createHash('sha256')
+  .update(precache.join() + offlineHtml + readFileSync('public/sw.js', 'utf8'))
+  .digest('hex')
+  .slice(0, 10);
+const sw = readFileSync('dist/sw.js', 'utf8')
+  .replace("'__VERSION__'", JSON.stringify(version))
+  .replace("'__BASE__'", JSON.stringify(base))
+  .replace("['__PRECACHE__']", JSON.stringify(precache));
+writeFileSync('dist/sw.js', sw);
 
 console.log(`postbuild: .htaccess + robots.txt written (base ${base}${staging ? ', staging' : ''})`);

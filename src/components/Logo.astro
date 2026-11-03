@@ -1,19 +1,23 @@
 ---
-// Vector redraw of the JNT block logo (red / black / yellow). Replace with the
-// client's original vector file if they have one.
+// JNT block logo as pure vector shapes (no font needed). Letter outlines come from
+// Instrument Sans (SIL Open Font License), thickened with a matching stroke.
+// Standalone copies: public/logo.svg (mark) and public/logo-full.svg (with wordmark).
+import paths from '../data/logo-paths.json';
+
 interface Props { label?: boolean; onDark?: boolean }
 const { label = false, onDark = false } = Astro.props;
 const blocks = [
-  { x: 0, fill: '#f05a5b', letter: 'J' },
-  { x: 96, fill: onDark ? '#f3f0e8' : '#151515', letter: 'N', text: onDark ? '#151515' : '#fff' },
-  { x: 192, fill: '#fbb740', letter: 'T' },
+  { x: 0, fill: '#f05a5b', letter: 'J' as const },
+  // On the dark footer the black block keeps a thin paper outline so its shape still reads.
+  { x: 96, fill: '#151515', letter: 'N' as const, stroke: onDark ? 'rgb(243 240 232 / 0.45)' : undefined },
+  { x: 192, fill: '#fbb740', letter: 'T' as const },
 ];
 ---
 <svg viewBox="0 0 312 80" role="img" aria-label={label ? undefined : 'JNT Suppliers'} aria-hidden={label ? 'true' : undefined}>
   {blocks.map((b) => (
-    <g>
-      <polygon points={`${b.x + 22},0 ${b.x + 120},0 ${b.x + 98},80 ${b.x},80`} fill={b.fill} />
-      <text x={b.x + 60} y="57" text-anchor="middle" fill={b.text ?? '#fff'} font-family="IBM Plex Sans, system-ui, sans-serif" font-weight="600" font-size="44">{b.letter}</text>
-    </g>
+    <polygon points={`${b.x + 22},0 ${b.x + 120},0 ${b.x + 98},80 ${b.x},80`} fill={b.fill} stroke={b.stroke} stroke-width={b.stroke ? 2 : undefined} />
   ))}
+  <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="miter">
+    {blocks.map((b) => <path d={paths.mark[b.letter]} />)}
+  </g>
 </svg>

@@ -1124,6 +1124,122 @@ ol {
   }
 }
 
+/* ---------- Loader (only shown while the visitor waits) ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: rgb(243 240 232 / 0.72);
+  backdrop-filter: blur(2px);
+  animation: loader-in 0.2s ease both;
+}
+.loader__card {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  padding: 1.4rem 1.8rem 1.2rem;
+  background: var(--paper);
+  border: var(--rule);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.loader__blocks {
+  display: flex;
+}
+.loader__blocks i {
+  width: 1.5rem;
+  height: 1.9rem;
+  margin-right: -0.32rem;
+  clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
+  animation: loader-ink 1.05s ease-in-out infinite;
+}
+.loader__blocks i:nth-child(1) {
+  background: var(--red);
+}
+.loader__blocks i:nth-child(2) {
+  background: var(--ink);
+  animation-delay: 0.15s;
+}
+.loader__blocks i:nth-child(3) {
+  background: var(--yellow);
+  animation-delay: 0.3s;
+}
+.loader__text {
+  margin: 0;
+  color: var(--ink);
+}
+@keyframes loader-ink {
+  0%, 100% { transform: translateY(0); opacity: 0.35; }
+  35% { transform: translateY(-0.35rem); opacity: 1; }
+  60% { transform: translateY(0); opacity: 1; }
+}
+@keyframes loader-in {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    animation: none;
+  }
+  .loader__blocks i {
+    animation: loader-fade 1.6s ease-in-out infinite;
+  }
+  @keyframes loader-fade {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+}
+
+/* ---------- Offline ---------- */
+.offline {
+  min-height: 60vh;
+}
+.offline__blocks {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+.offline__blocks i {
+  width: 2.6rem;
+  height: 3.2rem;
+  margin-right: -0.55rem;
+  clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
+  background: var(--red);
+}
+.offline__blocks i:nth-child(2) {
+  background: var(--ink);
+  opacity: 0.25;
+}
+.offline__blocks i:nth-child(3) {
+  background: var(--yellow);
+}
+.offline__note {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.net-banner {
+  position: fixed;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 101;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-left: 6px solid var(--yellow);
+  font-size: 0.92rem;
+  box-shadow: 0 6px 18px rgb(21 21 21 / 0.25);
+}
+/* Above the mobile contact bar */
+@media (max-width: 860px) {
+  .net-banner {
+    bottom: calc(3.5rem + 0.75rem + env(safe-area-inset-bottom));
+  }
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   background: var(--ink);
@@ -1597,6 +1713,29 @@ ol {
   font-size: 0.9rem;
   font-weight: 600;
   margin: 0;
+}
+.field__label {
+  font: 500 0.8rem/1.2 var(--f-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.field__hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+/* Turnstile widget: keep it in the form column; it needs at least 300px */
+.field--check .cf-turnstile {
+  min-height: 65px;
+  max-width: 100%;
+}
+.field--check.is-missing .cf-turnstile {
+  outline: 2px solid var(--red-ink);
+  outline-offset: 3px;
+}
+.field--check.is-missing .field__hint {
+  color: var(--red-ink);
+  font-weight: 600;
 }
 .hp {
   position: absolute;

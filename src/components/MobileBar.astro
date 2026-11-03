@@ -1,0 +1,10 @@
+---
+// Sticky quick-contact bar, shown on phones and small tablets only.
+import Icon from './Icon.astro';
+import { site, url } from '../data/site';
+---
+<nav class="mbar" aria-label="Quick contact">
+  <a href={site.whatsappHref}><Icon name="chat" /><span>WhatsApp</span></a>
+  <a href={site.phoneHref}><Icon name="phone" /><span>Call</span></a>
+  <a class="mbar__quote" href={url('/contact/')}><Icon name="doc" /><span>Quote</span></a>
+</nav>

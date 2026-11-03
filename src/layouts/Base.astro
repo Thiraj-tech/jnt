@@ -4,6 +4,7 @@ import { getImage } from 'astro:assets';
 import shareSrc from '../assets/scenes/04.jpeg';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
 import { site, url, isStaging } from '../data/site';
 
 interface Props {
@@ -68,5 +69,6 @@ const shareUrl = new URL(share.src, site.url).href;
       <slot />
     </main>
     <Footer />
+    <MobileBar />
   </body>
 </html>

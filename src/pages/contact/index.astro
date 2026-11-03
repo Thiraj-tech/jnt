@@ -84,7 +84,7 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
         </form>
       </div>
 
-      <aside aria-labelledby="direct-title">
+      <aside class="contact-direct" aria-labelledby="direct-title">
         <p class="label eyebrow" id="direct-title">Direct contact</p>
         <ul class="direct">
           <li><a href={site.whatsappHref}><Icon name="chat" /><span class="label">WhatsApp</span><strong>{site.phoneDisplay}</strong></a></li>
